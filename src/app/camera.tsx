@@ -6,10 +6,6 @@ const Camera=()=>{
     const videoRef=useRef<any>(null);
     const [mediaStream, setMediaStream]= useState<MediaStream |null>(null);
 
-    const sendVideoData=(data:string)=>{
-        socket.emit();
-    }
-
     useEffect(()=>{
         const enableVideoStream = async()=>{
             try{
