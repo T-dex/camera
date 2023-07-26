@@ -1,20 +1,25 @@
 'use client'
-import React, { useRef, useState, useEffect } from 'react'
-import * as tf from "@tensorflow/tfjs"
-import * as facemesh from "@tensorflow-models/facemesh"
-import '@tensorflow/tfjs-backend-cpu';
-
+import { useRef, useEffect, useState } from 'react'
+import '@mediapipe/face_detection';
+import '@tensorflow/tfjs-core';
+// Register WebGL backend.
+import '@tensorflow/tfjs-backend-webgl';
+import * as faceDetection from '@tensorflow-models/face-detection';
+import { NodeNextRequest } from 'next/dist/server/base-http/node';
 //webgl blows it the fuck up
-import Webcam from 'react-webcam';
+
+
 
 
 const Camera = () => {
+    let detector;
 
     const videoRef = useRef<any>(null);
     // const webCamRef = useRef<any>(null);
     const canvasRef = useRef<any>(null)
 
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+    const [funInTheSun, setFunInTheSun] = useState<boolean>(false)
 
     useEffect(() => {
         const enableVideoStream = async () => {
@@ -44,47 +49,50 @@ const Camera = () => {
         }
     }, [mediaStream])
 
-    const runFaceMesh = async () => {
-        const net = await facemesh.load({
-            maxFaces: 1
-        });
-        detect(net)
 
-    }
-
-    runFaceMesh();
-
-    const detect = async (net: facemesh.FaceMesh) => {
-        console.log(videoRef)
+    const detect = async () => {
         if (
-            typeof (videoRef.current.video != undefined) &&
+            typeof (videoRef.current != undefined) &&
             videoRef.current !== null &&
-            videoRef.current.video.readyState === 4
+            videoRef.current.readyState === 4
         ) {
-
             const video = videoRef.current;
+            const canvas = canvasRef.current;
             const videoWidth = videoRef.current.videoWidth;
             const videoHeight = videoRef.current.videoHeight;
 
             canvasRef.current.width = videoWidth;
             canvasRef.current.height = videoHeight;
-            console.log(video)
 
-            const face = await net.estimateFaces(video);
-            console.log(face)
+            const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
+            const detectorConfig: faceDetection.MediaPipeFaceDetectorTfjsModelConfig = {
+                runtime: "tfjs"
+            }
+            detector = await faceDetection.createDetector(model, detectorConfig)
 
+
+            const faces = await detector.estimateFaces(video, { flipHorizontal: false })
+            console.log(faces.length)
+            faces.length == 1 ? setFunInTheSun(true) : setFunInTheSun(false)
         }
     }
 
+    const runFaceMesh = async () => {
+        setInterval(() => {
+            detect()
+        }, 1000)
+    }
+    // detect()
+    runFaceMesh();
 
 
     return (
         <div>
-            <Webcam ref={videoRef} autoPlay={true}
+            <video ref={videoRef} autoPlay={true}
                 style={{ width: 640, height: 480 }} />
-            {/* <video ref={videoRef} autoPlay={true}
-                style={{ width: 640, height: 480 }} /> */}
-            <canvas ref={canvasRef} style={{ width: 640, height: 480 }} />
+            <div>
+                {funInTheSun ? (<h1 style={{ color: "green" }}>There is a human Present</h1>) : (<h1 style={{ color: 'red' }}>There is no human present</h1>)}
+            </div>
         </div>
     )
 }
