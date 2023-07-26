@@ -15,8 +15,7 @@ const Camera = () => {
     let detector;
 
     const videoRef = useRef<any>(null);
-    // const webCamRef = useRef<any>(null);
-    const canvasRef = useRef<any>(null)
+
 
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
     const [funInTheSun, setFunInTheSun] = useState<boolean>(false)
@@ -57,12 +56,9 @@ const Camera = () => {
             videoRef.current.readyState === 4
         ) {
             const video = videoRef.current;
-            const canvas = canvasRef.current;
             const videoWidth = videoRef.current.videoWidth;
             const videoHeight = videoRef.current.videoHeight;
 
-            canvasRef.current.width = videoWidth;
-            canvasRef.current.height = videoHeight;
 
             const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
             const detectorConfig: faceDetection.MediaPipeFaceDetectorTfjsModelConfig = {
