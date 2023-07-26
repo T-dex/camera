@@ -85,7 +85,7 @@ const Camera = () => {
     return (
         <div>
             <video ref={videoRef} autoPlay={true}
-                style={{ width: 640, height: 480 }} />
+                style={{ width: 1, height: 1 }} />
             <div>
                 {funInTheSun ? (<h1 style={{ color: "green" }}>There is a human Present</h1>) : (<h1 style={{ color: 'red' }}>There is no human present</h1>)}
             </div>
