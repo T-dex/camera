@@ -68,18 +68,20 @@ const Camera = () => {
 
 
             const faces = await detector.estimateFaces(video, { flipHorizontal: false })
-            console.log(faces.length)
+            console.log(faces)
             faces.length == 1 ? setFunInTheSun(true) : setFunInTheSun(false)
         }
     }
-
-    const runFaceMesh = async () => {
-        setInterval(() => {
+    useEffect(() => {
+        const check = setInterval(() => {
             detect()
         }, 1000)
-    }
-    // detect()
-    runFaceMesh();
+        return () => {
+            clearInterval(check);
+        }
+
+    }, [])
+
 
 
     return (
@@ -87,7 +89,7 @@ const Camera = () => {
             <video ref={videoRef} autoPlay={true}
                 style={{ width: 1, height: 1 }} />
             <div>
-                {funInTheSun ? (<h1 style={{ color: "green" }}>There is a human Present</h1>) : (<h1 style={{ color: 'red' }}>There is no human present</h1>)}
+                {funInTheSun ? (<h1 style={{ color: "green" }}>There is Human Present</h1>) : (<h1 style={{ color: 'red' }}>There no Human</h1>)}
             </div>
         </div>
     )
