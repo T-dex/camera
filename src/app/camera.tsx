@@ -5,8 +5,7 @@ import '@tensorflow/tfjs-core';
 // Register WebGL backend.
 import '@tensorflow/tfjs-backend-webgl';
 import * as faceDetection from '@tensorflow-models/face-detection';
-import { NodeNextRequest } from 'next/dist/server/base-http/node';
-//webgl blows it the fuck up
+
 
 
 
