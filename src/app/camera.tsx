@@ -18,6 +18,7 @@ const Camera = () => {
 
     const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
     const [funInTheSun, setFunInTheSun] = useState<boolean>(false)
+    const [faceData, setFaceData]= useState<any>()
 
     useEffect(() => {
         const enableVideoStream = async () => {
@@ -47,7 +48,6 @@ const Camera = () => {
         }
     }, [mediaStream])
 
-
     const detect = async () => {
         if (
             typeof (videoRef.current != undefined) &&
@@ -66,9 +66,11 @@ const Camera = () => {
             detector = await faceDetection.createDetector(model, detectorConfig)
 
 
-            const faces = await detector.estimateFaces(video, { flipHorizontal: false })
-            console.log(faces)
+            const faces = await detector.estimateFaces(video)
+            setFaceData(faces)
             faces.length == 1 ? setFunInTheSun(true) : setFunInTheSun(false)
+            console.log(faceData)
+            return
         }
     }
     useEffect(() => {

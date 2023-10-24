@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# *Main is not working at this time*
+
+To test the camera locally please switch to `visCamera` or `mediapipe`
+
 ## Getting Started
 
 First, run the development server:
