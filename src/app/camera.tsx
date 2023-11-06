@@ -49,7 +49,7 @@ const Camera = () => {
         }
     }, [mediaStream])
     
-    const detect = async (context: CanvasRenderingContext2D | undefined) => {
+    const detect = async (context: CanvasRenderingContext2D |null|  undefined) => {
         if(!c1.current)return;
         // paintToCanvas()
         const paint= setInterval(()=>{
