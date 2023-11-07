@@ -70,8 +70,6 @@ const Camera = () => {
             c1.current.height=videoHeight;
             c1.current.width=videoWidth;
 
-   
-
             const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
             const detectorConfig: faceDetection.MediaPipeFaceDetectorTfjsModelConfig = {
                 runtime: "tfjs",
@@ -81,8 +79,6 @@ const Camera = () => {
 
 
             const faces = await detector.estimateFaces(c1.current)
-            console.log(faces)
-            setFaceData(faces)
             faces.length == 1 ? setFunInTheSun(true) : setFunInTheSun(false)
             return ()=>{
                 clearInterval(paint)
@@ -92,7 +88,6 @@ const Camera = () => {
 
     
     useEffect(() => {
-
         const canvas = c1.current
         const context= canvas?.getContext('2d')
 
@@ -113,7 +108,7 @@ const Camera = () => {
                 <canvas id="vidDisplay" ref={c1} style={ {display:"none"}}/>
                 </div>
                 <div>
-                {funInTheSun ? (<h1 style={{ color: "green" }}>Human Detected </h1>) : (<h1 style={{ color: 'red' }}>No Human Detected</h1>)}
+                {funInTheSun ? (<h1 style={{ color: "green" }}>You are being Monitored. Do not resist </h1>) : (<h1 style={{ color: 'red' }}>Please step in front of the camera to be monitored</h1>)}
             </div>
         </div>
     )
